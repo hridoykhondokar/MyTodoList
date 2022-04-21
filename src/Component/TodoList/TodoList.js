@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Swal from 'sweetalert2';
 import "./Style.css";
 
 const getLocalData = () =>{
@@ -21,7 +22,8 @@ const TodoList = () => {
 
     const addItem = () => {
       if (!inputData){
-        alert("please add item");
+        Swal.fire('Please Fill The Data');
+
       }
       else if (inputData && toggleButton){
         setInputItem(
