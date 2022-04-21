@@ -1,22 +1,61 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import "./Style.css";
+
+const getLocalData = () =>{
+    const lists =localStorage.getItem("mytodolist")
+
+    if(lists){
+      return JSON.parse(lists);
+    }else{
+      return[];
+    }
+};
 
 const TodoList = () => {
 
     const [inputData, setInputData] = useState("");
-    const [inputItem, setInputItem] = useState([]);
+    const [inputItem, setInputItem] = useState(getLocalData());
+    const [isUpdate, setIsUpdate] = useState("");
+    const [toggleButton, setToggleButton] = useState(false);
+  
 
     const addItem = () => {
       if (!inputData){
         alert("please add item");
-      }else{
+      }
+      else if (inputData && toggleButton){
+        setInputItem(
+          inputItem.map((currentElement) => {
+             if(currentElement.id === isUpdate){
+                return{ ...currentElement, name: inputData };
+             }
+             return currentElement;
+          })
+        )
+       
+        setInputData("");
+        setIsUpdate(null);
+        setToggleButton(false)
+       
+      }
+      else{
         const myNewInputData = {
            id: new Date().getTime().toString(),
            name:inputData
         }
         setInputItem([...inputItem, myNewInputData]);
+        setInputData("");
       };
     };
+
+    const updateItem = (id) => {
+      const todoItemUpdate = inputItem.find((currentElement) => {
+         return currentElement.id === id;
+      })
+      setInputData(todoItemUpdate.name);
+      setToggleButton(true)
+      setIsUpdate(id);
+   }
 
     const deleteItems = (id) => {
        const updateItem = inputItem.filter((currentElement) => {
@@ -29,6 +68,12 @@ const TodoList = () => {
       setInputItem([]);
     }
 
+    useEffect(() =>{
+      localStorage.setItem("mytodolist", JSON.stringify(inputItem));
+    },[inputItem])
+
+   
+
   return (
     <>
       <div className="main-div">
@@ -40,23 +85,31 @@ const TodoList = () => {
               <input type="text"
                 className="from-control"
                 placeholder="✍ Add Item"
-                defaultValue = {inputData}
-                onBlur  = {(e) =>  setInputData(e.target.value)}
+                value = {inputData}
+                onChange  = {(e) =>  setInputData(e.target.value)}
                 
               />
-              <i className="fa fa-plus " onClick={addItem}></i>
+
+              {
+                toggleButton ? <i className="far fa-edit " onClick={addItem}></i> :
+                <i className="fa fa-plus " onClick={addItem}></i>
+              }
+              
 
             </div>
             {/* show our items   */}
              {
-               inputItem.map((currentElement, index) => {
+               inputItem.map((currentElement) => {
                 
                return(
-                <div className="showItems" key={index}>
+                <div className="showItems" key={currentElement.id}>
                 <div className="eachItem">
                   <h3>{currentElement.name}</h3>
                   <div className="todo-btn">
-                    <i className="far fa-edit "></i>
+                    <i className="far fa-edit "
+                      onClick={() => updateItem(currentElement.id)}
+                    ></i>
+
                     <i className="far fa-trash-alt "
                       onClick={() => deleteItems(currentElement.id)}
                     ></i>
