@@ -38,8 +38,8 @@ html {
 
 input {
   /* display: block; */
-  min-width: 40rem;
-  height: 3.4rem;
+  width: 350px;
+  height: 4rem;
   padding: 2rem 1.2rem;
   font-size: 1.8rem;
   line-height: 1.42857143;
@@ -109,12 +109,14 @@ input:focus {
 }
 
 .eachItem {
+  width: 350px;
+  margin: auto;
   background: #fff;
-  padding: 1.2rem 1rem;
+  padding: 1rem 1rem;
   border-radius: 0.5rem;
-  margin-bottom: 0.7rem;
-  margin-left: 1rem;
-  min-width: 40rem;
+  /* margin-bottom: 0.7rem; */
+  /* margin-left: 1rem; */
+  /* min-width: 40rem; */
   word-break: break-word;
   background: rgb(85, 41, 220);
   display: flex;

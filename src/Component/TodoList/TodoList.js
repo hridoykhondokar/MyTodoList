@@ -77,7 +77,8 @@ const TodoList = () => {
   return (
     <>
       <div className="main-div">
-        <div className="child-div">
+       <div className="container">
+       <div className="child-div">
           <figure>
             <img src="./images/todo.jpg" alt="todologo" />
             <figcaption>Add Your List Here ✌</figcaption>
@@ -136,6 +137,7 @@ const TodoList = () => {
             </div>
           </figure>
         </div>
+       </div>
       </div>
     </>
   )
